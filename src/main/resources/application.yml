@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: demo-api-oauth
+  mail:
+    host: 127.0.0.1
+    port: 25
+    username: username
+    password: password
+    properties:
+      debug: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  #datasource:
+  #  url: jdbc:mysql://localhost:3306/TiendaOnline
+  #  username: root
+  #  password:
+  #  driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: ["configprops", "env", "health", "info", "threaddump", "logfile", "jhi-metrics", "prometheus" ]
+
+# This properties are used to configure the Keycloak client
+keycloak-admin:
+  auth-server-url: http://localhost:8080/auth
+  realm-admin: master
+  client-id-admin: admin-cli
+  username: binary-mindset
+  password: admin
+
+# This properties are used to protect the App with Keycloak
+keycloak:
+  realm: demo-api
+  resource: demo-api-client
+  auth-server-url: ${keycloak-admin.auth-server-url}
+  ssl-required: external
+  public-client: true
+  principal-attribute: preferred_username
+

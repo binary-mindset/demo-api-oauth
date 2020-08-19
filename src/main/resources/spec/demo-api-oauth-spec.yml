@@ -1,0 +1,121 @@
+openapi: 3.0.2
+info:
+  title: Demo API Oauth
+  description: This is the Demo-API-Oauth
+  version: "0.1"
+servers:
+  - url: https://www.binarymindset.com/api
+  - url: http://www.binarymindset.com/api
+
+tags:
+  - name: Test
+    description: Endpoints to play with
+  - name: Users
+    description: Endpoints for user management
+
+paths:
+
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create a new user account
+      operationId: createUser
+      requestBody:
+        description: User to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{token}/activate:
+    put:
+      tags:
+        - Users
+      summary: Activate an user account
+      operationId: activateUser
+      parameters:
+        - name: token
+          in: path
+          description: Token to activate user
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: User activated successfully
+
+  /user/hello:
+    get:
+      tags:
+        - Test
+      summary: hello user
+      operationId: helloUser
+      responses:
+        200:
+          description: hello user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelloResponse'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#Problem'
+
+  /admin/hello:
+    get:
+      tags:
+        - Test
+      summary: hello admin
+      operationId: helloAdmin
+      responses:
+        200:
+          description: hello admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelloResponse'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#Problem'
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+    HelloResponse:
+      type: object
+      properties:
+        response:
+          type: string
