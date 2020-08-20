@@ -24,7 +24,7 @@ public class KeycloakUserServiceImpl implements UserService {
     private final Keycloak keycloakClient;
     private final MapperFacade mapperFacade;
 
-    private final static String PUBLICARS_REALM = "demo-api";
+    private final static String REALM = "demo-api";
 
     @Autowired
     public KeycloakUserServiceImpl(final Keycloak keycloakClient, final UserMapper userMapper) {
@@ -40,7 +40,7 @@ public class KeycloakUserServiceImpl implements UserService {
         keycloakUser.setEnabled(false);
 
         // Create the user in Keycloak
-        RealmResource realmResource = keycloakClient.realm(PUBLICARS_REALM);
+        RealmResource realmResource = keycloakClient.realm(REALM);
         Response response = realmResource.users().create(keycloakUser);
 
         if (201 != response.getStatus()) {
@@ -63,12 +63,12 @@ public class KeycloakUserServiceImpl implements UserService {
         assert userRepresentation != null;
         userRepresentation.setEnabled(Boolean.TRUE);
         userRepresentation.setEmailVerified(Boolean.TRUE);
-        keycloakClient.realm(PUBLICARS_REALM).users().get(token).update(userRepresentation);
+        keycloakClient.realm(REALM).users().get(token).update(userRepresentation);
     }
 
     @Override
     public UserDto getUserByUsername(String username) {
-        List<UserRepresentation> results = keycloakClient.realm(PUBLICARS_REALM).users().search(username);
+        List<UserRepresentation> results = keycloakClient.realm(REALM).users().search(username);
 
         if (results == null || results.isEmpty()) {
             log.error("User not found");
@@ -94,7 +94,7 @@ public class KeycloakUserServiceImpl implements UserService {
      * @return the keycloak user
      */
     private UserRepresentation getKeycloakUserById(String userId) {
-        UserResource userResource = keycloakClient.realm(PUBLICARS_REALM).users().get(userId);
+        UserResource userResource = keycloakClient.realm(REALM).users().get(userId);
 
         if (userId == null) {
             log.error("User not found");

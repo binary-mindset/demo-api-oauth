@@ -18,5 +18,4 @@ public class UserTestController implements UserApiDelegate {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
 }
